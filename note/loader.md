@@ -158,5 +158,85 @@ module: {
 
 ### 样式打包
 
+### CSS
 
+1.下载 `css-loader` , `style-loader`
+
+```
+cnpm install style-loader css-loader -D
+```
+
+2. rules数组里再加入一个对象
+
+```js
+rules:[{
+   test:/\.css$/,
+   use:['style-loader','css-loader']
+}]
+```
+
+3.运行打包命令
+
+```
+npm run bundle
+```
+
+#### 打包过程详解
+
+css-loader，负责合并引用的css文件; 比如下面这种，
+
+`index.css`
+
+```
+@import './style/wework.css'
+```
+
+`wework.css`
+
+```
+.wework{
+    width:150px;
+    height:150px;
+}
+```
+
+style-loader ，把全部的样式塞到html文件head下面的style标签中。
+
+### SCSS
+
+官网查找sass-loader, 有详细的依赖安装指南和配置参考。
+
+注意，loader的顺序，webpack的loader是有执行顺序的，不要搞错顺序。执行顺序为，从下到上，从右到左。
+
+#### 特殊处理CSS3
+
+参考webpack文档，postcss-loader
+
+1.创建 `postcss.config.js` , 安装autoprefixer
+
+```
+module.exports = {
+    plugins: [
+        require('autoprefixer')
+    ]
+  }
+```
+
+2.再次执行打包命令，对于SCSS中的CSS3自动产生厂商前缀
+
+例如
+
+```
+body{
+    .wework{
+        width: 150px;
+        height: 150px;
+        transform: translate(100px, 100px);
+    } 
+}
+```
+
+页面展示
+
+![avatar](./images/autoprefixer.png)
 

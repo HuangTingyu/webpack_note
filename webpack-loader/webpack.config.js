@@ -16,6 +16,9 @@ module.exports = {
                     limit: 20480
                 }
             }
+        },{
+            test:/\.scss$/,
+            use:['style-loader','css-loader','postcss-loader','sass-loader']
         }]
 
     },
