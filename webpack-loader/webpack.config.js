@@ -11,9 +11,9 @@ module.exports = {
                 loader: 'url-loader',
                 // placeholder占位符
                 options: {
-                    name: '[name].[ext]',
+                    name: '[name]_[hash].[ext]',
                     outputPath: 'images/',
-                    limit: 2048
+                    limit: 20480
                 }
             }
         }]

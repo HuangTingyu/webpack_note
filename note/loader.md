@@ -1,0 +1,162 @@
+## loader
+
+对于后缀名不是 `.js` 的文件，都要通过 `loader`去打包
+
+### 图片打包
+
+### file-loader
+
+下面实例一下图片的打包——
+
+#### 01.下载 `file-loader`
+
+```
+cnpm install file-loader -D
+```
+
+#### 02.添加 `webpack` 配置文件
+
+`webpack.config.js`
+
+```
+module: {
+        rules: [{
+            pic: /\.jpg$/,
+            use: {
+                loader: 'file-loader'
+            }
+        }]
+
+    },
+```
+
+#### 03.打包
+
+```
+npm run bundle
+```
+
+#### file-loader本质
+
+把打包的文件，复制到dist目录下，同时可以通过
+
+```
+var picture = require('../asset/wework.jpg')
+```
+
+获得图片当前的地址。
+
+#### module本质(webpack.config.js)
+
+标记出webpack不认识的文件，标明打包工具。
+
+编译 `.vue` 文件同理。下面取自vue项目的 `webpack.base.conf.js`
+
+```
+rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueLoaderConfig
+      },
+```
+
+### 02.配置——loader
+
+#### placeholder(规定打包后的图片名称)
+
+在options里面加上 `name: '[name].[ext]'`，使得打包出来的图片名称和图片格式，和打包前的一样。
+
+```js
+module: {
+        rules: [{
+            test: /\.jpg$/,
+            use: {
+                loader: 'file-loader',
+                // placeholder占位符
+                options: {
+                    name: '[name].[ext]'
+                }
+            }
+        }]
+
+    },
+```
+
+也可以带上哈希值
+
+```js
+module: {
+        rules: [{
+            test: /\.(jpg|png|gif)$/,
+            use: {
+                loader: 'file-loader',
+                // placeholder占位符
+                options: {
+                    name: '[name]_[hash].[ext]',
+                    outputPath: 'images/',
+                    limit: 2048
+                }
+            }
+        }]
+
+    },
+```
+
+关于 `file-loader` 的配置参数 —— <https://webpack.js.org/loaders/file-loader/>
+
+#### outputPath(规定打包后的文件路径)
+
+参数解释，当遇到jpg, png, gif 后缀的图片，打包到images文件夹下面。
+
+```js
+ module: {
+        rules: [{
+            test: /\.(jpg|png|gif)$/,
+            use: {
+                loader: 'file-loader',
+                // placeholder占位符
+                options: {
+                    name: '[name]_[hash].[ext]',
+                    outputPath: 'images/',
+                    limit: 2048
+                }
+            }
+        }]
+
+    },
+    out
+```
+
+### url-loader
+
+#### (把图片打包成base64的格式)
+
+如果太大的图片，打包到JS文件中，会导致页面阻塞，拖慢页面的加载速度。所以，只将小于2kb的图片打包到JS文件中。对于大于2kb的图片，将被打包到images文件中。
+
+```js
+module: {
+        rules: [{
+            test: /\.(jpg|png|gif)$/,
+            use: {
+                loader: 'url-loader',
+                // placeholder占位符
+                options: {
+                    name: '[name]_[hash].[ext]',
+                    outputPath: 'images/',
+                    limit: 2048
+                }
+            }
+        }]
+
+    },
+```
+
+加上 `limit` 参数以后，如果图片小于2048b (2kb) 就会被转化为base64的格式，保存在打包后的文件中。
+
+如果图片大于2048b (2kb)，就会被复制到dist文件夹中。
+
+### 样式打包
+
+
+

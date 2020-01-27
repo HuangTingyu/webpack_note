@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports = __webpack_require__.p + \"images/wework.jpg\";\n\n//# sourceURL=webpack:///./asset/wework.jpg?");
+eval("module.exports = __webpack_require__.p + \"images/wework_a1c60cef4705f3fb8e8f789f13588249.jpg\";\n\n//# sourceURL=webpack:///./asset/wework.jpg?");
 
 /***/ }),
 
