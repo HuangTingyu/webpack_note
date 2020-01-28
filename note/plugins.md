@@ -39,5 +39,32 @@ module.exports = {
 
 打包后生成dist目录下，两个文件，一个`dist/bundle.js` , 一个`dist/index.html`
 
+### CleanWebpackPlugin
+
+#### 作用 -
+
+清空dist目录再打包。
+
+#### 使用 -
+
+```js
+var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+
+module.exports = {
+  mode:'development',
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    filename: 'dist.js'
+  },
+  plugins: [new HtmlWebpackPlugin({
+      template:'./src/index.html'
+  }),new CleanWebpackPlugin()]
+};
+```
+
 
 
