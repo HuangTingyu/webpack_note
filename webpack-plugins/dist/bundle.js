@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("      var body = document.getElementsByTagName('body')[0];\r\n      var content = document.createElement('div');\r\n      content.innerText = 'test plugins';\r\n      body.append(content);  \n\n//# sourceURL=webpack:///./src/index.js?");
+eval("    var dom = document.getElementById('root');\r\n    var content = document.createElement('div');\r\n    content.innerText = 'content';\r\n    dom.append(content);\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ })
 
