@@ -240,3 +240,176 @@ body{
 
 ![avatar](./images/autoprefixer.png)
 
+### importLoaders
+
+```
+{
+            test:/\.scss$/,
+            use:['style-loader',{
+                loaders:'css-loader',options:{
+                    importLoaders:2
+                }
+            },'postcss-loader','sass-loader']
+        }
+```
+
+此处，加入importLoaders的目的，是确保在 `scss` 中引用的 `scss` 文件
+
+```
+@import './avatar.scss'
+```
+
+也会经过 `postcss-loader` 和 `sass-loader` 的打包。
+
+如果此处不加 `importLoader` , 那么在 `scss` 中引用 `scss` 可能会报错。
+
+### CSS模块化
+
+为了防止，CSS对引入模块的样式产生影响。
+
+尝试在`index.js` 中，加入两段代码，用于插入图片。
+
+`index.js`
+
+```js
+import './scss/index.scss'
+import wework from '../asset/wework.jpg'
+import createAvatar from './js/createAvatar' 
+
+createAvatar();
+var img = new Image();
+img.src = wework;
+img.classList.add('wework')
+var root = document.getElementById('root')
+root.append(img)
+```
+
+`createAvatar.js`
+
+```js
+import wework from '../../asset/wework.jpg'
+function createAvatar(){
+    var img = new Image();
+    img.src = wework;
+    img.classList.add('wework')
+
+    var root = document.getElementById('root')
+    root.append(img)
+}
+export default createAvatar;
+```
+
+#### 表现
+
+页面出现两张图片，`index.scss` 的样式对引入的子模块`createAvatar` 也生效了。
+
+### 实现模块化
+
+因此，为了防止污染子模块，在options中加入 `modules:true`
+
+```js
+{
+            test:/\.scss$/,
+            use:['style-loader',{
+                loader:'css-loader',options:{
+                    importLoaders:2,
+                    modules:true
+                }
+            },'postcss-loader','sass-loader']
+        }
+```
+
+此时，要引入 `index.scss` 的样式，`index.js` 代码改成这样
+
+```js
+import style from './scss/index.scss'
+...
+img.classList.add(style.wework)
+```
+
+`createAvatar` 代码保持不变。
+
+#### 表现
+
+`createAvatar` 插入的图片，样式不生效。`index.js` 中插入的图片，样式生效。
+
+### 字体图标库
+
+以阿里巴巴的iconfont为例 ——
+
+首先，新建一个icon文件夹，把eot, svg, ttf, woff 文件复制到icon文件夹下面。然后，复制 `iconfont.css` 中的内容到 `index.scss` 中。
+
+设置文件目录，
+
+- src
+  - font
+    - iconfont.eot
+    - iconfont.svg
+    - iconfont.ttf
+    - iconfont.woff
+  - scss
+    - index.scss
+  - index.js
+
+`index.scss` , 复制 `iconfont.css` 中的内容。
+
+注意下面url中的文件路径，要指向正确的路径。
+
+```js
+// @import './avatar.scss'
+@font-face {font-family: "iconfont";
+    src: url('../font/iconfont.eot?t=1580218360115'); /* IE9 */
+    src: url('../font/iconfont.eot?t=1580218360115#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url(...) format('woff2'),
+    url('../font/iconfont.woff?t=1580218360115') format('woff'),
+    url('../font/iconfont.ttf?t=1580218360115') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('../font/iconfont.svg?t=1580218360115#iconfont') format('svg'); /* iOS 4.1- */
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .iconall:before {
+    content: "\e6ef";
+  }
+  
+  .iconbussiness-man:before {
+    content: "\e6f0";
+  }
+  
+  .iconcomponent:before {
+    content: "\e6f2";
+  }
+```
+
+`index.js`
+
+```js
+import './scss/index.scss'
+var root = document.getElementById('root')
+root.innerHTML = '<div class="iconfont iconbussiness-man"></div>'
+```
+
+`webpack.config.js`
+
+```js
+rules: [{
+            test:/\.scss$/,
+            use:['style-loader',{
+                loader:'css-loader',options:{
+                    importLoaders:2
+                }
+            },'postcss-loader','sass-loader']
+        },{
+            test:/\.(eot|ttf|svg|woff)$/,
+            use:{
+                loader:'file-loader'
+            }
+        }]
+```
+

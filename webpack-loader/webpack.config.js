@@ -18,7 +18,17 @@ module.exports = {
             }
         },{
             test:/\.scss$/,
-            use:['style-loader','css-loader','postcss-loader','sass-loader']
+            use:['style-loader',{
+                loader:'css-loader',options:{
+                    importLoaders:2
+                    // modules:true
+                }
+            },'postcss-loader','sass-loader']
+        },{
+            test:/\.(eot|ttf|svg|woff)$/,
+            use:{
+                loader:'file-loader'
+            }
         }]
 
     },
