@@ -24,12 +24,14 @@ module.exports = {
                     // modules:true
                 }
             },'postcss-loader','sass-loader']
-        },{
-            test:/\.(eot|ttf|svg|woff)$/,
-            use:{
-                loader:'file-loader'
-            }
-        }]
+        }
+        // {
+        //     test:/\.(eot|ttf|svg|woff)$/,
+        //     use:{
+        //         loader:'file-loader'
+        //     }
+        // }
+    ]
 
     },
     output: {
