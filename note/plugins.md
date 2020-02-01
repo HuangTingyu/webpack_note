@@ -66,5 +66,7 @@ module.exports = {
 };
 ```
 
+### 参考资料
 
+`HtmlWebpackPlugin` —— <https://webpack.js.org/plugins/html-webpack-plugin/> 以及 <https://github.com/jantimon/html-webpack-plugin#options>
 
