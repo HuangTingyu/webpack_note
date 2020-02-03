@@ -4,12 +4,17 @@ var { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 
 module.exports = {
-  mode:'production',
-  devtool:'cheap-module-source-map',
+  mode:'development',
+  devtool:'eval-cheap-module-source-map',
   entry: {
     main:'./src/index.js',
   },
+  devServer:{
+    contentBase:'./dist',
+    open:true
+  },
   output: {
+    publicPath:'/',
     filename:'[name].js',
     path: path.resolve(__dirname, './dist'),
   },
