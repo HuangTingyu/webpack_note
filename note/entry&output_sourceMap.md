@@ -102,6 +102,22 @@ output: {
 
 sourceMap是一个映射关系，可以通过打包出的文件代码，定位出原文件代码的所在位置。
 
+建议使用 ——
+
+1. 开发模式
+
+```
+mode:'development',
+devtool:'eval-cheap-module-source-map',
+```
+
+2. 线上模式
+
+```
+mode:'production',
+devtool:'cheap-module-source-map',
+```
+
 #### 设置
 
 devtool设置了sourceMap之后，报错直接标出源代码错误的地方，而非打包后的文件。
@@ -141,7 +157,15 @@ sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2 .......
 
 1.不显示第三方模块的报错，只显示业务代码的报错；业务代码就是，`entry` 部分引入的文件。
 
-2.提升打包速度；
+2.报错不显示列，提升打包速度；
+
+#### cheap-module-source-map
+
+先比上面的 `cheap-source-map` ，加入了第三方模块的报错。
+
+#### eval
+
+打包速度最快，提示可能不全面。
 
 #### 参考链接
 
