@@ -83,9 +83,67 @@ app.listen(3000,()=>{
 
 运行 `node server.js` ,服务已部署在 http://localhost:3000 , 但是需要手动刷新。
 
+### 热模块刷新
+
+#### 需求1：样式更新不刷新页面
+
+需求：当样式改变的时候，不刷新页面，只刷新样式。
+
+### 配置
+
+加入hot和hotOnly，hotOnly表示，当html不生效的时候，也不自动刷新页面。
+
+```js
+ devServer:{
+    contentBase:'./dist',
+    open:true,
+    hot:true,
+    hotOnly:true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+```
+
+#### 需求2：只刷新改动的模块
+
+需求：当一个文件引入两个模块，改动其中一个模块时，不要全页面刷新，只刷新改动的模块。
+
+比如 `index.js` 文件
+
+```js
+import counter from './counter'
+import number from './number'
+
+counter();
+number();
+
+if(module.hot){
+    module.hot.accept('./number', () => {
+        number()
+    })
+}
+```
+
+改变 `js` 文件的时候，要加入 
+
+```
+if(module.hot){...}
+```
+
+为什么CSS不用加入这段？
+
+答：因为css-loader里面已经内置了这段代码。vue里面也有类似的模块刷新机制，内置在vue-loader中。
+
 ### 参考资料
 
 关于webpack命令 —— 在documentation-API-Command Line Interface <https://webpack.js.org/api/cli/>
 
 关于webpack在NodeJS中的调用 —— 在documentation-API-ode Interface
+
+关于Hot Module Replacement —— <https://webpack.js.org/guides/hot-module-replacement/>
+
+Hot Module Replacement参数 —— <https://webpack.js.org/api/hot-module-replacement/>
+
+Hot Module Replacement 的实现原理 —— <https://webpack.js.org/concepts/hot-module-replacement/>
 
