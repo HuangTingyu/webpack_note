@@ -71,6 +71,27 @@ npm run bundle
 
 ## 03. `webpack `核心概念
 
-### 01.核心概念——loader
+### 01.loader
 
 详见 `loader.md`
+
+### 02.plugins
+
+详见plugins.md
+
+### 03.webpackDevServer
+
+关于开发过程，热刷新，详见webpackDevServer.md
+
+### 04.entry&output以及sourceMap
+
+entry&output以及sourceMap的相关配置，
+
+详见entry&output_sourceMap.md
+
+### 05.babel
+
+关于babel的配置，如何打包es6，如何兼容低版本浏览器(babel-polyfill)，如何打包react代码(babel-react)，如何优化打包比如`tree-shaking` 的使用。
+
+详见babel.md
+

@@ -154,3 +154,51 @@ cnpm install --save-dev @babel/preset-react
 }
 ```
 
+## 优化
+
+### tree-shaking
+
+作用 —— 避免引入无关的模块
+
+只支持es，也就是`import` ! （不支持 `commonJS` ，也就是`require` 的引入方法）
+
+#### 配置
+
+开发环境下，`mode:development`
+
+`webpack.config.js`
+
+```
+optimization:{
+    usedExports:true
+  }
+```
+
+`package.json` 可以加一项配置，避免没有export模块的文件，比如`babel/polyfill` （原理：在window上面挂载各种函数）在打包过程中被自动过滤掉
+
+```
+"sideExffects":["@babel/polyfill"],
+```
+
+以及css 文件，也不要使用tree-shaking
+
+```
+"sideExffects":["*.css"]
+```
+
+### 使用
+
+`development` 环境下 ——
+
+配置如上文所示。
+
+使用tree-shaking之后，打包后的文件出现了`exports used`这一项
+
+```
+/*! exports provided: add, minus */
+/*! exports used: add */
+```
+
+`production` 环境下 ——
+
+使用`tree-shaking` 打包之后，打包文件不再出现没引入的模块。

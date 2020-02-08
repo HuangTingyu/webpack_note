@@ -5,8 +5,8 @@ var webpack = require('webpack');
 
 
 module.exports = {
-  mode:'development',
-  devtool:'eval-cheap-module-source-map',
+  mode:'production',
+  devtool:'cheap-module-source-map',
   entry: {
     main:'./src/index.js',
   },
@@ -32,5 +32,8 @@ module.exports = {
     new HtmlWebpackPlugin({template:'./src/index.html'}),
     new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin()
-  ]
+],
+  optimization:{
+    usedExports:true
+  }
 };
