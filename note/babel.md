@@ -1,6 +1,12 @@
-### babel在webpack中的使用
+## babel在webpack中的使用
 
 参考资料 —— <https://babel.docschina.org/setup#installation>
+
+### 1.业务代码指南
+
+详细参考 —— <https://babel.docschina.org/docs/en/babel-preset-env>
+
+@babel/preset-env
 
 1. 安装 babel-loader @babel/core
 
@@ -39,13 +45,112 @@ module: {
         exclude: /node_modules/, 
         loader: 'babel-loader',
         options:{
-            'presets': [['@babel/preset-env',{
-              useBuiltIns:'usage',
-              corejs:3
+            "presets": [["@babel/preset-env", {
+      			"useBuiltIns":"usage" ,
+      			"corejs":3
+    		}]]
+        }
+     }]
+},
+```
+
+此处的，`"useBuiltIns":"usage"` 的配置是为了压缩打包后的文件体积。只引入，业务代码所需的函数源代码。否则，如果不加这个参数，polyfill会自动把所有的函数代码都塞进打包文件中。
+
+#### 在所有文件的入口处，记得
+
+```
+import "@babel/polyfill";
+```
+
+### 2.库代码指南
+
+详细参考 —— <https://babel.docschina.org/docs/en/babel-plugin-transform-runtime>
+
+使用原因 —— 避免造成，因为babel-polyfill补充函数定义，造成的全局污染。
+
+此处使用@babel/plugin-transform-runtime，不用再引入pollyfill，也就是不用再 `import "@babel/polyfill";` 
+
+```js
+npm install --save-dev @babel/plugin-transform-runtime @babel/runtime @babel/runtime-corejs2
+```
+
+2.配置
+
+此处记得 `corejs:2` , 是为了引入polyfill  
+
+`webpack.config.js`
+
+```js
+module: {
+    rules: [{ 
+        test: /\.js$/, 
+        exclude: /node_modules/, 
+        loader: 'babel-loader',
+        options:{
+            "plugins": [["@babel/plugin-transform-runtime",{
+              "corejs": 2,
+              "helpers": true,
+              "regenerator": true,
+              "useESModules": false
             }]]
         }
      }]
 },
 ```
 
-此处的，useBuiltIns的配置是为了压缩打包后的文件体积。只引入，业务代码所需的函数源代码。否则，如果不加这两个参数，polyfill会自动把所有的函数代码都塞进打包文件中。
+### .babelrc
+
+把options里面的内容，放到 `.babelrc` 中，可以使 `webpack.config.js` 文件更加简洁。
+
+将上面的配置文件，改造如下。
+
+`.babelrc`
+
+```
+{
+    "plugins": [["@babel/plugin-transform-runtime",{
+        "corejs": 2,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }]]
+}
+```
+
+`webpack.config.js`
+
+```js
+rules: [{ 
+        test: /\.js$/, 
+        exclude: /node_modules/, 
+        loader: 'babel-loader'
+     }]
+```
+
+### 3.react代码指南
+
+详细参考 —— <https://babel.docschina.org/docs/en/babel-preset-react>
+
+1.安装react相关
+
+```
+cnpm install react react-dom -D
+```
+
+以及babel的react相关
+
+```
+cnpm install --save-dev @babel/preset-react
+```
+
+2.配置 `.babelrc`
+
+```
+{
+    "presets": [["@babel/preset-env", {
+      "useBuiltIns":"usage" ,
+      "corejs":3
+    }],["@babel/preset-react"]]
+}
+```
+
