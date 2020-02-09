@@ -87,11 +87,15 @@ npm run bundle
 
 entry&output以及sourceMap的相关配置，
 
-详见entry&output_sourceMap.md
+详见entry_output_sourceMap.md
 
 ### 05.babel
 
 关于babel的配置，如何打包es6，如何兼容低版本浏览器(babel-polyfill)，如何打包react代码(babel-react)，如何优化打包比如`tree-shaking` 的使用。
 
 详见babel.md
+
+### 06.dev&production
+
+区分开发环境和生产环境，详细见 `dev_production.md`
 

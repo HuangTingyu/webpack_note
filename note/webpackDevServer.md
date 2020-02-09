@@ -91,7 +91,7 @@ app.listen(3000,()=>{
 
 ### 配置
 
-加入hot和hotOnly，hotOnly表示，当html不生效的时候，也不自动刷新页面。
+加入hot和hotOnly，hotOnly设置为true的时候，页面改变将不会自动刷新页面。
 
 ```js
  devServer:{
