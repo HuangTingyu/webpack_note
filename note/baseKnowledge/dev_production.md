@@ -4,11 +4,11 @@
 
 1.开发环境
 
-`webpack.dev.js`
+`build\webpack.dev.js`
 
 2.生产环境
 
-`webpack.prod.js`
+`build\webpack.prod.js`
 
 3.`package.json`
 
@@ -29,7 +29,7 @@
 cnpm install webpack-merge -D
 ```
 
-(2) `webpack.dev.js`
+(2) `build\webpack.dev.js`
 
 ```js
 const webpack = require('webpack');
@@ -55,7 +55,7 @@ const devConfig = {
 module.exports = merge(commonConfig, devConfig)
 ```
 
-`webpack.prod.js`
+`build\webpack.prod.js`
 
 ```js
 const merge = require('webpack-merge');
@@ -69,7 +69,7 @@ const prodConfig = {
 module.exports = merge(commonConfig, prodConfig)
 ```
 
-`webpack.common.js`
+`build\webpack.common.js`
 
 ```js
 var path = require('path');
@@ -90,12 +90,13 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({template:'./src/index.html'}),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            verbose: true,
+        }),
     ],
     output: {
-        publicPath:'/',
         filename:'[name].js',
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '../dist'),
       },
       
 }

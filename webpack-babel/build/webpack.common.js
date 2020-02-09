@@ -5,7 +5,8 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        main:'./src/index.js',
+        // lodash:'./src/lodash.js',
+        main:'./src/index.js'
       },
     module: {
         rules: [{ 
@@ -16,12 +17,18 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({template:'./src/index.html'}),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            verbose: true,
+        }),
     ],
+    optimization:{
+        splitChunks:{
+            chunks:'all'
+        }
+    },
     output: {
-        publicPath:'/',
         filename:'[name].js',
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '../dist'),
       },
       
 }
